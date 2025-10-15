@@ -46,16 +46,18 @@ public class NetworkPeerDetector {
         this.instanceId = UUID.randomUUID().toString().replace("-", "").substring(0, 8);
         this.userMessage = message;
 
-        if (interfaceName == null || interfaceName.isEmpty() || "auto".equals(interfaceName)) {
-            this.networkInterface = findBestNetworkInterface();
+        if (interfaceName == null || interfaceName.isEmpty() || "auto".equalsIgnoreCase(interfaceName)) {
+            this.networkInterface = pickFirstUsableInterface();
             System.out.println("Auto-selected network interface: " + networkInterface.getName());
         } else {
             NetworkInterface nif = NetworkInterface.getByName(interfaceName);
             if (nif == null) throw new IOException("Network interface not found: " + interfaceName);
+            if (!nif.isUp() || nif.isLoopback() || !nif.supportsMulticast()) {
+                throw new IOException("Interface is not suitable: " + interfaceName);
+            }
             this.networkInterface = nif;
         }
 
-        printInterfaces();
         initializeSocket();
 
         System.out.println("Started detector. group=" + multicastGroup.getHostAddress() +
@@ -63,134 +65,32 @@ public class NetworkPeerDetector {
                 " id=" + instanceId + " message=" + message);
     }
 
-
-    private NetworkInterface findBestNetworkInterface() throws SocketException {
-        List<NetworkInterface> candidates = new ArrayList<>();
-
-        Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
-        while (interfaces.hasMoreElements()) {
-            NetworkInterface ni = interfaces.nextElement();
+    private NetworkInterface pickFirstUsableInterface() throws IOException {
+        Enumeration<NetworkInterface> ifaces = NetworkInterface.getNetworkInterfaces();
+        while (ifaces.hasMoreElements()) {
+            NetworkInterface ni = ifaces.nextElement();
             try {
-                if (isSuitableInterface(ni)) {
-                    candidates.add(ni);
+                if (ni.isUp() && !ni.isLoopback() && ni.supportsMulticast()) {
+                    return ni;
                 }
-            } catch (SocketException e) {
-                continue;
+            } catch (SocketException ignore) {
             }
         }
-
-        NetworkInterface selected = selectBestInterface(candidates);
-
-        if (selected == null) {
-            throw new SocketException("No suitable network interface found for multicast");
-        }
-
-        return selected;
-    }
-
-
-    private boolean isSuitableInterface(NetworkInterface ni) throws SocketException {
-        if (!ni.isUp() || !ni.supportsMulticast() || ni.isLoopback()) {
-            return false;
-        }
-
-        Enumeration<InetAddress> addresses = ni.getInetAddresses();
-        boolean hasSuitableAddress = false;
-
-        while (addresses.hasMoreElements()) {
-            InetAddress addr = addresses.nextElement();
-            if (!isIPv6 && addr instanceof Inet4Address) {
-                if (!addr.isLinkLocalAddress() && !addr.isLoopbackAddress()) {
-                    hasSuitableAddress = true;
-                    break;
-                }
-            }
-
-            else if (isIPv6 && addr instanceof Inet6Address) {
-                if (!addr.isLinkLocalAddress() && !addr.isLoopbackAddress()) {
-                    hasSuitableAddress = true;
-                    break;
-                }
-            }
-        }
-
-        return hasSuitableAddress;
-    }
-
-
-    private NetworkInterface selectBestInterface(List<NetworkInterface> candidates) {
-        if (candidates.isEmpty()) {
-            return null;
-        }
-
-        NetworkInterface best = null;
-        int bestScore = -1;
-
-        for (NetworkInterface ni : candidates) {
-            String name = ni.getName().toLowerCase();
-            int score = 0;
-
-
-            if (name.startsWith("eth") || name.startsWith("enp") || name.startsWith("ens")) {
-                score += 30;
-            } else if (name.startsWith("wlan") || name.startsWith("wifi")) {
-                score += 20;
-            } else {
-                score += 10;
-            }
-
-
-            if (score > bestScore) {
-                bestScore = score;
-                best = ni;
-            }
-        }
-
-        return best;
-    }
-
-    private void printInterfaces() {
-        System.out.println("Available network interfaces:");
-        try {
-            Enumeration<NetworkInterface> ifs = NetworkInterface.getNetworkInterfaces();
-            while (ifs.hasMoreElements()) {
-                NetworkInterface ni = ifs.nextElement();
-                try {
-                    String status = ni.isUp() ? "UP" : "DOWN";
-                    String multicast = ni.supportsMulticast() ? "MULTICAST" : "NO_MCAST";
-                    String loopback = ni.isLoopback() ? "LOOPBACK" : "";
-                    String current = (ni.equals(networkInterface)) ? " [SELECTED]" : "";
-
-                    System.out.printf("IF: %-8s %-6s %-10s %-10s%s\n",
-                            ni.getName(), status, multicast, loopback, current);
-
-                    Enumeration<InetAddress> addrs = ni.getInetAddresses();
-                    while (addrs.hasMoreElements()) {
-                        InetAddress addr = addrs.nextElement();
-                        System.out.println("  addr: " + addr.getHostAddress());
-                    }
-                } catch (Exception e) {
-                    System.out.println("IF: " + ni.getName() + " (error getting info)");
-                }
-            }
-        } catch (SocketException e) {
-            System.err.println("Failed to list interfaces: " + e.getMessage());
-        }
+        throw new IOException("No suitable multicast-capable interface found");
     }
 
     private void initializeSocket() throws IOException {
-        socket = new MulticastSocket(null);
-        socket.setReuseAddress(true);
+        socket = new MulticastSocket((SocketAddress) null);
 
-        if (isIPv6) {
-            socket.bind(new InetSocketAddress(InetAddress.getByName("::"), networkPort));
-        } else {
-            socket.bind(new InetSocketAddress(InetAddress.getByName("0.0.0.0"), networkPort));
+        try {
+            socket.setReuseAddress(true);
+        } catch (SocketException ignored) {
         }
-
         socket.setNetworkInterface(networkInterface);
         socket.setTimeToLive(1);
         socket.setLoopbackMode(false);
+
+        socket.bind(new InetSocketAddress(networkPort));
 
         SocketAddress group = new InetSocketAddress(multicastGroup, networkPort);
         socket.joinGroup(group, networkInterface);
@@ -233,6 +133,20 @@ public class NetworkPeerDetector {
         }
     }
 
+    private static String sourceIpOf(DatagramPacket pkt) {
+        SocketAddress sa = pkt.getSocketAddress();
+        InetAddress addr;
+        if (sa instanceof InetSocketAddress) {
+            addr = ((InetSocketAddress) sa).getAddress();
+        } else {
+            addr = pkt.getAddress();
+        }
+        if (addr == null) return "unknown";
+        String ip = addr.getHostAddress();
+        int pct = ip.indexOf('%');
+        return (pct > 0) ? ip.substring(0, pct) : ip;
+    }
+
     private void handlePacket(DatagramPacket pkt) {
         byte[] data = Arrays.copyOf(pkt.getData(), pkt.getLength());
         if (data.length < 3) return;
@@ -242,16 +156,14 @@ public class NetworkPeerDetector {
         if (len < 0 || len > 500 || data.length < 3 + len) return;
 
         String payload = new String(data, 3, len, StandardCharsets.UTF_8);
-        String remoteIp = pkt.getAddress().getHostAddress();
+        String remoteIp = sourceIpOf(pkt);
 
         String[] parts = payload.split(":", 2);
         if (parts.length < 1) return;
         String peerId = parts[0];
-        String peerMsg = parts.length > 1 ? parts[1] : "";
+        String peerMsg = (parts.length > 1) ? parts[1] : "";
 
-        if (peerId.equals(this.instanceId)) {
-            return;
-        }
+        if (peerId.equals(this.instanceId)) return;
 
         if (type == MSG_TYPE_BEAT) {
             long now = System.currentTimeMillis();
@@ -279,8 +191,8 @@ public class NetworkPeerDetector {
         Map<String, List<String>> ipToIds = new TreeMap<>();
         for (Map.Entry<String, PeerInfo> e : peers.entrySet()) {
             String id = e.getKey();
-            String ip = e.getValue().ip != null ? e.getValue().ip : "unknown";
-            ipToIds.computeIfAbsent(ip, k -> new ArrayList<>()).add(id);
+            String ip = (e.getValue().ip != null && !e.getValue().ip.isBlank()) ? e.getValue().ip : "unknown";
+            ipToIds.computeIfAbsent(ip, k -> new ArrayList<String>()).add(id);
         }
 
         List<String> display = new ArrayList<>();
@@ -290,9 +202,7 @@ public class NetworkPeerDetector {
             if (ids.size() == 1) {
                 display.add(ip);
             } else {
-                for (String id : ids) {
-                    display.add(id + "@" + ip);
-                }
+                for (String id : ids) display.add(id + "@" + ip);
             }
         }
 
@@ -334,9 +244,10 @@ public class NetworkPeerDetector {
     public static void main(String[] args) {
         if (args.length < 3 || args.length > 4) {
             System.err.println("Usage: java NetworkPeerDetector <group_ip> <port> <message> [interface_name]");
-            System.err.println("       java NetworkPeerDetector 224.0.0.1 8888 \"my message\" eth0");
-            System.err.println("       java NetworkPeerDetector 224.0.0.1 8888 \"my message\"     (auto-select)");
-            System.err.println("       java NetworkPeerDetector 224.0.0.1 8888 \"my message\" auto (auto-select)");
+            System.err.println("Example:");
+            System.err.println("  java NetworkPeerDetector 224.0.0.1 8888 \"my message\" eth0");
+            System.err.println("  java NetworkPeerDetector 224.0.0.1 8888 \"my message\"     (auto-select)");
+            System.err.println("  java NetworkPeerDetector 224.0.0.1 8888 \"my message\" auto (auto-select)");
             System.exit(1);
         }
 
