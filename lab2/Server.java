@@ -8,6 +8,7 @@ public class Server {
     private final int port;
     private final Path uploadDir = Paths.get("uploads");
     private final ExecutorService executor = Executors.newCachedThreadPool();
+    private volatile boolean running = true;
 
     public Server(int port) {
         this.port = port;
@@ -28,15 +29,31 @@ public class Server {
             System.out.println("Сервер запущен на порту " + port);
             System.out.println("Ожидание подключений клиентов...");
 
-            while (true) {
+            while (running) {
                 Socket clientSocket = serverSocket.accept();
                 executor.submit(new ClientHandler(clientSocket));
             }
         } catch (IOException e) {
-            System.err.println("Ошибка сервера: " + e.getMessage());
+            if (running) {
+                System.err.println("Ошибка сервера: " + e.getMessage());
+            }
+        } finally {
+            shutdown();
         }
     }
-
+    
+    public void shutdown() {
+        running = false;
+        executor.shutdown();
+        try {
+            if (!executor.awaitTermination(5, TimeUnit.SECONDS)) {
+                executor.shutdownNow();
+            }
+        } catch (InterruptedException e) {
+            executor.shutdownNow();
+            Thread.currentThread().interrupt();
+        }
+    }
 
     private class ClientHandler implements Runnable {
         private final Socket socket;
@@ -61,7 +78,6 @@ public class Server {
 
                 System.out.println("Получение: " + fileName + " (" + formatSize(fileSize) + ") от " + clientInfo);
 
-
                 Path safeFileName = Paths.get(fileName).getFileName();
                 if (safeFileName == null) {
                     throw new IOException("Некорректное имя файла");
@@ -70,6 +86,7 @@ public class Server {
 
 
                 long receivedBytes = receiveFile(dis, filePath, fileSize, fileName);
+
 
                 boolean success = (receivedBytes == fileSize);
                 dos.writeBoolean(success);
@@ -157,6 +174,10 @@ public class Server {
         }
 
         int port = Integer.parseInt(args[0]);
-        new Server(port).start();
+        Server server = new Server(port);
+
+        Runtime.getRuntime().addShutdownHook(new Thread(server::shutdown));
+
+        server.start();
     }
 }
