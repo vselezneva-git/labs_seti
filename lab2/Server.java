@@ -12,7 +12,7 @@ public class Server {
 
     public Server(int port) {
         this.port = port;
-        createUploadDir();
+        createUploadDir(); // ???????????????????????????
     }
 
     private void createUploadDir() {
@@ -41,7 +41,7 @@ public class Server {
             shutdown();
         }
     }
-    
+
     public void shutdown() {
         running = false;
         executor.shutdown();
@@ -118,7 +118,7 @@ public class Server {
             long bytesSinceReport = 0;
 
             try (FileOutputStream fos = new FileOutputStream(filePath.toFile())) {
-                byte[] buffer = new byte[8192];
+                byte[] buffer = new byte[8_192];
                 int bytesRead;
 
                 while (totalReceived < expectedSize &&
