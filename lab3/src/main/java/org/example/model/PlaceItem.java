@@ -3,12 +3,10 @@ package org.example.model;
 public class PlaceItem {
     private final String name;
     private final String description;
-    private final String kind;
 
-    public PlaceItem(String name, String description, String kind) {
+    public PlaceItem(String name, String description) {
         this.name = name;
         this.description = description;
-        this.kind = kind;
     }
 
     public String getName() {
@@ -19,7 +17,4 @@ public class PlaceItem {
         return description;
     }
 
-    public String getKind() {
-        return kind;
-    }
 }

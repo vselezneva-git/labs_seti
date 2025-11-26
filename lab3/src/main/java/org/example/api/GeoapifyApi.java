@@ -41,20 +41,13 @@ public class GeoapifyApi extends ApiClient {
                             name = properties.get("name").getAsString();
                         }
 
-                        String category = "interesting_place";
-                        if (properties.has("categories") && properties.get("categories").isJsonArray()) {
-                            JsonArray categories = properties.getAsJsonArray("categories");
-                            if (categories.size() > 0) {
-                                category = categories.get(0).getAsString();
-                            }
-                        }
 
                         if (placeId != null) {
-                            CompletableFuture<PlaceItem> detailFuture = getPlaceDetails(placeId, name, category);
+                            CompletableFuture<PlaceItem> detailFuture = getPlaceDetails(placeId, name);
                             detailsFutures.add(detailFuture);
                         } else {
                             detailsFutures.add(CompletableFuture.completedFuture(
-                                    new PlaceItem(name, "", category)
+                                    new PlaceItem(name, "")
                             ));
                         }
                     }
@@ -78,7 +71,7 @@ public class GeoapifyApi extends ApiClient {
                 .exceptionally(ex -> new ArrayList<PlaceItem>());
     }
 
-    private CompletableFuture<PlaceItem> getPlaceDetails(String placeId, String name, String category) {
+    private CompletableFuture<PlaceItem> getPlaceDetails(String placeId, String name) {
         String url = String.format(
                 "https://api.geoapify.com/v2/place-details?id=%s&apiKey=%s",
                 placeId, API_KEY);
@@ -124,12 +117,12 @@ public class GeoapifyApi extends ApiClient {
                             }
                         }
 
-                        return new PlaceItem(name, description.toString(), category);
+                        return new PlaceItem(name, description.toString());
 
                     } catch (Exception e) {
-                        return new PlaceItem(name, "", category);
+                        return new PlaceItem(name, "");
                     }
                 })
-                .exceptionally(ex -> new PlaceItem(name, "", category));
+                .exceptionally(ex -> new PlaceItem(name, ""));
     }
 }

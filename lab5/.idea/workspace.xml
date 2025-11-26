@@ -5,9 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c933d069-f909-4e32-9430-4ff44163d151" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../lab2/Server$ClientHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/../lab2/Server$ClientHandler.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lab2/Server.class" beforeDir="false" afterPath="$PROJECT_DIR$/../lab2/Server.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lab2/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/../lab2/Server.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lab3/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../lab3/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lab3/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../lab3/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lab3/src/main/java/org/example/api/GeoapifyApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/../lab3/src/main/java/org/example/api/GeoapifyApi.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lab3/src/main/java/org/example/model/PlaceItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/../lab3/src/main/java/org/example/model/PlaceItem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,19 +48,6 @@
     "last_opened_file_path": "C:/labSeti/lab5"
   }
 }]]></component>
-  <component name="RunManager">
-    <configuration default="true" type="JetRunConfigurationType">
-      <module name="lab5" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
-      <module name="lab5" />
-      <option name="filePath" />
-      <method v="2" />
-    </configuration>
-  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
