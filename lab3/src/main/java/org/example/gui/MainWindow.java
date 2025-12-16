@@ -7,6 +7,9 @@ import org.example.service.PlacesService;
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class MainWindow extends JFrame {
     private final PlacesService placesService;
@@ -27,7 +30,6 @@ public class MainWindow extends JFrame {
         setSize(900, 700);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout(10, 10));
-
         initUI();
     }
 
@@ -146,7 +148,7 @@ public class MainWindow extends JFrame {
     private void handleLocationSelection(LocationItem location) {
         weatherArea.setText("Loading weather...");
         placesModel.clear();
-        placesModel.addElement(new PlaceItem("Loading interesting places...", "", ""));
+        placesModel.addElement(new PlaceItem("Loading interesting places...", ""));
 
         var weatherFuture = placesService.getWeather(location.getLat(), location.getLon());
         var placesFuture = placesService.getPlacesWithDescriptions(location.getLat(), location.getLon());
@@ -166,7 +168,7 @@ public class MainWindow extends JFrame {
                     placesModel.clear();
                     if (places.isEmpty()) {
                         placesModel.addElement(new PlaceItem("No interesting places found",
-                                "Try selecting a larger city", ""));
+                                "Try selecting a larger city"));
                     } else {
                         places.forEach(placesModel::addElement);
                     }
@@ -175,7 +177,7 @@ public class MainWindow extends JFrame {
             SwingUtilities.invokeLater(() -> {
                 placesModel.clear();
                 placesModel.addElement(new PlaceItem("Places loading error",
-                        ex.getMessage(), ""));
+                        ex.getMessage()));
             });
             ex.printStackTrace();
             return null;

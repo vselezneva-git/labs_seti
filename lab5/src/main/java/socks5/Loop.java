@@ -1,4 +1,4 @@
-package socks;
+package socks5;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -87,3 +87,6 @@ final class Loop {
         }
     }
 }
+
+
+//добавить тайм ауты и выход из цикла

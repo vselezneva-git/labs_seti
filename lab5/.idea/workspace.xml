@@ -5,12 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c933d069-f909-4e32-9430-4ff44163d151" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../lab3/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../lab3/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../lab3/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../lab3/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lab3/src/main/java/org/example/api/GeoapifyApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/../lab3/src/main/java/org/example/api/GeoapifyApi.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../lab3/src/main/java/org/example/model/PlaceItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/../lab3/src/main/java/org/example/model/PlaceItem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lab3/src/main/java/org/example/gui/MainWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/../lab3/src/main/java/org/example/gui/MainWindow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lab3/target/classes/org/example/api/GeoapifyApi.class" beforeDir="false" afterPath="$PROJECT_DIR$/../lab3/target/classes/org/example/api/GeoapifyApi.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lab3/target/classes/org/example/gui/MainWindow.class" beforeDir="false" afterPath="$PROJECT_DIR$/../lab3/target/classes/org/example/gui/MainWindow.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lab3/target/classes/org/example/model/PlaceItem.class" beforeDir="false" afterPath="$PROJECT_DIR$/../lab3/target/classes/org/example/model/PlaceItem.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/socks5/Conn.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/socks5/Conn.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/socks5/Dns.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/socks5/Dns.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/socks5/Loop.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/socks5/Loop.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/socks5/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/socks5/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/socks/Conn$Req.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/socks/Conn$Req.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/socks/Conn.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/socks/Conn.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/original-socks5-proxy-1.0.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/original-socks5-proxy-1.0.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/socks5-proxy-1.0.jar" beforeDir="false" afterPath="$PROJECT_DIR$/target/socks5-proxy-1.0.jar" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,16 +46,37 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/labSeti/lab5"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/labSeti/lab5&quot;
   }
-}]]></component>
+}</component>
+  <component name="RunManager">
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="socks.Main" />
+      <module name="lab5" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="socks.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.Main" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">

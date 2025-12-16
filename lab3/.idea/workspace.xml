@@ -5,10 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="eb6dd435-d36f-43d7-9975-46e59d7f468d" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/api/GeoapifyApi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/api/GeoapifyApi.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/model/PlaceItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/model/PlaceItem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/gui/MainWindow.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/gui/MainWindow.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/example/api/GeoapifyApi.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/example/api/GeoapifyApi.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/example/gui/MainWindow.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/example/gui/MainWindow.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/example/model/PlaceItem.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/example/model/PlaceItem.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../lab5/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../lab5/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -52,7 +53,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "Application.AsyncPlacesApp.executor": "Run",
+    "Application.AsyncPlacesApp.executor": "Debug",
     "Gradle.async-api-app [:com.asyncapi.LocationExplorerGUI.main()].executor": "Run",
     "Gradle.async-api-app [:com.asyncapi.Main.main()].executor": "Run",
     "Gradle.async-api-app.executor": "Run",
@@ -122,5 +123,24 @@
       <updated>1764080134706</updated>
     </task>
     <servers />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/org/example/gui/MainWindow.java</url>
+          <line>111</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/org/example/gui/MainWindow.java</url>
+          <line>124</line>
+          <properties>
+            <option name="lambda-ordinal" value="0" />
+          </properties>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
