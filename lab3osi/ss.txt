@@ -1,0 +1,4 @@
+curl -x localhost:80 http://fit.ippolitov.me/CN_2/2025/list.html
+
+
+ ADDR=localhost PORT=80 ./test_proxy.sh
